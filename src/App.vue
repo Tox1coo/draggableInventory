@@ -50,4 +50,34 @@ export default {
     margin: auto;
   }
 
+  .close {
+    position: absolute;
+    cursor: pointer;
+    &__wrapper {
+      position: relative;
+      width: 2rem;
+      height: 2rem;
+
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: inherit;
+        background-color: #4D4D4D;
+        &:first-child {
+          transform: translate(-50%,-50%) rotate(45deg);
+        }
+        &:last-child {
+          transform: translate(-50%,-50%) rotate(-45deg);
+        }
+
+      }
+      transition: transform 0.5s ease;
+      &:hover {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
 </style>

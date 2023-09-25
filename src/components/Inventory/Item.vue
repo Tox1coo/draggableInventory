@@ -1,7 +1,9 @@
 <template>
-  <div class="card__item" >
-    <div :style="{'background': getBackgroundSecond}"></div>
-    <div :style="{'background': getBackground}"></div>
+  <div  class="card__item" >
+    <div :style="{width:sizes.width + 'rem', height: sizes.height + 'rem'}" class="card__item-wrapper">
+      <div class="block" :style="{'background': getBackgroundSecond}"></div>
+      <div class="block" :style="{'background': getBackground}"></div>
+    </div>
   </div>
 </template>
 
@@ -11,13 +13,22 @@ import {computed, PropType} from "vue";
 interface Item {
   id: number,
   columnId: number,
-  color: string
+  color: string,
+  name: string,
+  description:string
+}
+interface Sizes {
+  width: number,
+  height: number,
 }
 export default {
   name: "Item",
   props: {
     item: {
       type: Object as PropType<Item>
+    },
+    sizes: {
+      type: Object as PropType<Sizes>
     }
   },
   setup(props) {
@@ -54,16 +65,28 @@ export default {
 
 <style lang="scss">
   .card__item {
-    position: relative;
-    width: 4.8rem;
-    height: 4.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    &-wrapper {
+      position: relative;
+      border: 1px solid #4D4D4D;
+    }
+    &--draggable {
+      border: 2px solid #4D4D4D;
+      border-radius:20px;
+    }
   }
-  .card__item div {
+  .card__item .block{
     width: inherit;
     height: inherit;
     position: relative;
     z-index: 0;
+    transform: translateZ(-100px);
+
     &:first-child {
+      transform: translateZ(100px);
       position: absolute;
       top: -1rem;
       left: 1rem;
