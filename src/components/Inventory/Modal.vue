@@ -33,14 +33,9 @@
 
 <script lang="ts">
 import Item from "./Item.vue";
+import {Item as ItemInterface} from "../../../types/types"
 import {PropType} from "vue";
-interface Item {
-  id: number,
-  columnId: number,
-  color: string,
-  name: string,
-  description:string
-}
+
 export default {
   name: "Modal",
   components: {Item},
@@ -50,7 +45,7 @@ export default {
       default: false
     },
     Item: {
-      type: Object as PropType<Item>
+      type: Object as PropType<ItemInterface>
     }
   }
 }

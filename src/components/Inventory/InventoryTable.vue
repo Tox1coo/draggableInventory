@@ -15,17 +15,13 @@
 </template>
 
 <script lang="ts">
+import {ref} from "vue"
+import {Item as ItemInterface} from "../../../types/types"
+
 import Card from "./Card.vue";
 import Item from "./Item.vue";
-import {ref} from "vue"
 import Modal from "./Modal.vue";
-interface Item {
-  id: number,
-  columnId: number,
-  color: string,
-  name: string,
-  description:string
-}
+
 export default {
   name: "InventoryTable",
   components: {Modal, Card,Item},
@@ -42,10 +38,10 @@ export default {
       }
     })
     let items = ref();
-    if(localStorage.getItem('items') !== '') {
+    if(localStorage.getItem('items')) {
       items = ref(JSON.parse(localStorage.getItem('items')));
     }else {
-      items = ref<Item[]>([
+      items = ref<ItemInterface[]>([
         {
           id: 4,
           columnId: 1,
@@ -70,16 +66,15 @@ export default {
       ]);
     }
     let showModal = ref<boolean>(false);
-    let activeItem = ref<Item>();
+    let activeItem = ref<ItemInterface>();
     let draggableItem = ref<number>(0);
-    const getItem = (id:number) :Item | undefined => {
+    const getItem = (id:number) :ItemInterface | undefined => {
         const item = items.value.filter((item) => item.columnId === id)[0];
         return item;
     }
 
-    function drag(event: DragEvent, item:Item):void {
+    function drag(event: DragEvent, item:ItemInterface):void {
       draggableItem.value = item.id;
-      console.dir(event.target)
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("itemId", item.id.toString());
@@ -105,7 +100,7 @@ export default {
       showModal.value = true;
     }
 
-    const deleteItem = (currentItem:Item):void => {
+    const deleteItem = (currentItem:ItemInterface):void => {
       const itemIndex:number = items.value.findIndex((item) => {
         return currentItem.id === item.id;
       })
