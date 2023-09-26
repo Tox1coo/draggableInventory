@@ -4,9 +4,9 @@
           @drop="drop($event, column.id)"
           @showInfo="showModalItem"
           :columnId="column.id">
-      <Item :class="{'card__item--draggable': draggableItem === getItem(column.id).id}" v-if="getItem(column.id) !== undefined" :item="getItem(column.id)" draggable="true" @dragstart="drag($event, getItem(column.id))" :sizes="{width:4.8, height:4.8}"/>
+      <Item :class="{'card__item--draggable': draggableItem === getItem(column.id)?.id}" v-if="getItem(column.id) !== undefined" :item="getItem(column.id)" draggable="true" @dragstart="drag($event, getItem(column.id))" :sizes="{width:4.8, height:4.8}"/>
       <div v-if="getItem(column.id) !== undefined" class="number">
-        {{getItem(column.id).id}}
+        {{getItem(column.id)?.id}}
       </div>
     </Card>
     <Modal v-model:show="showModal" :Item="activeItem" @deleteItem="deleteItem"></Modal>
@@ -34,12 +34,13 @@ export default {
   setup(props) {
     const columns = Array.apply(null, Array(props.countColumn)).map((y,i) =>  {
       return {
-        id: ++i
+        id: ++i,
+        y: y
       }
     })
     let items = ref();
     if(localStorage.getItem('items')) {
-      items = ref(JSON.parse(localStorage.getItem('items')));
+      items = ref(JSON.parse(localStorage.getItem('items') || '{}'));
     }else {
       items = ref<ItemInterface[]>([
         {
@@ -68,27 +69,33 @@ export default {
     let showModal = ref<boolean>(false);
     let activeItem = ref<ItemInterface>();
     let draggableItem = ref<number>(0);
-    const getItem = (id:number) :ItemInterface | undefined => {
-        const item = items.value.filter((item) => item.columnId === id)[0];
+    const getItem = (id:number) :ItemInterface  => {
+        const item = items.value.filter((item:ItemInterface) => item.columnId === id)[0];
         return item;
     }
 
     function drag(event: DragEvent, item:ItemInterface):void {
       draggableItem.value = item.id;
-      event.dataTransfer.dropEffect = "move";
+      if(event.dataTransfer) {
+        event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("itemId", item.id.toString());
+      }
+
 
     }
     function drop(event: DragEvent, columnId:number):void {
       draggableItem.value = 0;
-      const itemId:number = +event.dataTransfer.getData("itemId");
-      items.value = items.value.map((el) => {
-        if(itemId === el.id)
-          el.columnId = columnId;
-        return el;
-      })
-      localStorage.setItem("items", JSON.stringify(items.value))
+      if(event.dataTransfer) {
+        const itemId:number = +event.dataTransfer.getData("itemId");
+        items.value = items.value.map((el:ItemInterface) => {
+          if(itemId === el.id)
+            el.columnId = columnId;
+          return el;
+        })
+        localStorage.setItem("items", JSON.stringify(items.value))
+      }
+     
     }
 
     const showModalItem = (columnID:number):void => {
@@ -101,7 +108,7 @@ export default {
     }
 
     const deleteItem = (currentItem:ItemInterface):void => {
-      const itemIndex:number = items.value.findIndex((item) => {
+      const itemIndex:number = items.value.findIndex((item:ItemInterface) => {
         return currentItem.id === item.id;
       })
 

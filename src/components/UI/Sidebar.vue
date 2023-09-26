@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import imageUrl from '/src/assets/sidebar.png' // => or relative path
 export default {
   name: "Sidebar",

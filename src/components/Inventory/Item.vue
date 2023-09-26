@@ -1,6 +1,6 @@
 <template>
   <div  class="card__item" >
-    <div :style="{width:sizes.width + 'rem', height: sizes.height + 'rem'}" class="card__item-wrapper">
+    <div :style="{width:sizes?.width + 'rem', height: sizes?.height + 'rem'}" class="card__item-wrapper">
       <div class="block" :style="{'background': getBackground}"></div>
       <div class="block" :style="{'background': getBackground}"></div>
     </div>
