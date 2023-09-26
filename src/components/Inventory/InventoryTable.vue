@@ -48,7 +48,7 @@ export default {
           columnId: 1,
           color: '#93BA77',
           name: "name",
-          description: "desctiption"
+          description: "desctiptiopn"
         },
         {
           id: 2,
