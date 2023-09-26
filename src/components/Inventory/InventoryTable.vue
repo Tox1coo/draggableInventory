@@ -32,10 +32,10 @@ export default {
     }
   },
   setup(props) {
+    //@ts-ignore
     const columns = Array.apply(null, Array(props.countColumn)).map((y,i) =>  {
       return {
         id: ++i,
-        y: y
       }
     })
     let items = ref();
