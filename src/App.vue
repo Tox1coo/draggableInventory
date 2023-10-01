@@ -2,12 +2,17 @@
 import Sidebar from "./components/UI/Sidebar.vue";
 import InventoryTable from "./components/Inventory/InventoryTable.vue";
 import Footer from "./components/UI/Footer.vue";
+import {ref} from 'vue';
 export default {
   name: "App",
   components: {Footer,InventoryTable,Sidebar},
   setup() {
     const countColumnsInventory = 25
-    return {countColumnsInventory};
+    let returnInventory = ref<boolean>(false)
+    function updateInventory() {
+      returnInventory.value = true;
+    }
+    return {countColumnsInventory,updateInventory, returnInventory};
   }
 }
 </script>
@@ -16,8 +21,8 @@ export default {
   <div class="container">
     <main class="main">
       <Sidebar/>
-      <InventoryTable :count-column="countColumnsInventory"/>
-      <Footer/>
+      <InventoryTable v-model:return-inventory="returnInventory" :count-column="countColumnsInventory"/>
+      <Footer @returnInventory="updateInventory"/>
     </main>
   </div>
 </template>
