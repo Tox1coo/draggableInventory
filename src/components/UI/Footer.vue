@@ -3,6 +3,9 @@
     <p class="sidebar__description">
       Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал
     </p>
+    <button @click="$emit('returnInventory')" class="return">
+      Вернуть инвентарь к началу!
+    </button>
     <div class="close">
       <div class="close__wrapper">
         <span></span>
@@ -14,7 +17,8 @@
 
 <script lang="ts">
 export default {
-  name: "Footer"
+  name: "Footer",
+
 }
 </script>
 
@@ -31,5 +35,10 @@ export default {
       top: 1rem;
       right: 1rem;
     }
+  }
+  .return {
+    margin-top: 2rem;
+    background-color: #fff;
+    padding: 1rem 2rem;
   }
 </style>
